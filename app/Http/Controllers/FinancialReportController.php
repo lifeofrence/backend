@@ -4,15 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\FinancialReport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class FinancialReportController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    private function withFileUrl(FinancialReport $report): array
+    {
+        $data = $report->toArray();
+        $data['file_url'] = $report->file_path ? Storage::url($report->file_path) : null;
+        return $data;
+    }
+
     public function index()
     {
-        return FinancialReport::where('is_active', true)->orderBy('period', 'desc')->get();
+        return FinancialReport::where('is_active', true)
+            ->orderBy('period', 'desc')
+            ->get()
+            ->map(function ($r) { return $this->withFileUrl($r); });
     }
 
     /**
@@ -35,7 +46,7 @@ class FinancialReportController extends Controller
         }
 
         $report = FinancialReport::create($validated);
-        return response()->json($report, 201);
+        return response()->json($this->withFileUrl($report), 201);
     }
 
     /**
@@ -43,7 +54,7 @@ class FinancialReportController extends Controller
      */
     public function show(FinancialReport $financialReport)
     {
-        return $financialReport;
+        return response()->json($this->withFileUrl($financialReport));
     }
 
     /**
@@ -66,7 +77,7 @@ class FinancialReportController extends Controller
         }
 
         $financialReport->update($validated);
-        return response()->json($financialReport);
+        return response()->json($this->withFileUrl($financialReport));
     }
 
     /**

@@ -59,18 +59,25 @@
 
                 <div class="space-y-2">
                     <label class="text-sm font-medium text-zinc-400">PDF Document</label>
-                    <div
+                    <div id="pdf-upload-container"
                         class="border-2 border-dashed border-zinc-800 rounded-xl p-8 text-center hover:border-[#DC833D]/50 transition-colors cursor-pointer relative group">
-                        <input type="file" name="file" accept=".pdf" required
+                        <input type="file" name="file" id="pdf-input" accept=".pdf" required
                             class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                        <div class="text-zinc-500 group-hover:text-zinc-300 transition-colors pointer-events-none">
+                        <div id="upload-placeholder" class="text-zinc-500 group-hover:text-zinc-300 transition-colors pointer-events-none">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto mb-2" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                             </svg>
                             <p class="text-sm font-medium">Upload PDF Report</p>
-                            <p class="text-[10px] mt-1 uppercase tracking-widest">PDF up to 10MB</p>
+                            <p class="text-[10px] mt-1 uppercase tracking-widest">PDF up to 100MB</p>
+                        </div>
+                        <div id="upload-success" class="hidden text-emerald-500 transition-colors pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <p id="filename-display" class="text-sm font-bold truncate px-4"></p>
+                            <p class="text-[10px] mt-1 uppercase tracking-widest text-[#DC833D]">File selected - Click "Upload" to save</p>
                         </div>
                     </div>
                 </div>
@@ -81,4 +88,22 @@
             </form>
         </div>
     </div>
+
+    <script>
+        document.getElementById('pdf-input').addEventListener('change', function (e) {
+            const placeholder = document.getElementById('upload-placeholder');
+            const success = document.getElementById('upload-success');
+            const filenameDisplay = document.getElementById('filename-display');
+            const container = document.getElementById('pdf-upload-container');
+            const file = e.target.files[0];
+
+            if (file) {
+                filenameDisplay.textContent = file.name;
+                placeholder.classList.add('hidden');
+                success.classList.remove('hidden');
+                container.classList.remove('border-zinc-800');
+                container.classList.add('border-emerald-500/50', 'bg-emerald-500/5');
+            }
+        });
+    </script>
 @endsection

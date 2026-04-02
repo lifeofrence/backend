@@ -49,7 +49,9 @@
                         </td>
                         <td class="px-6 py-4 text-right space-x-3">
                             <a href="{{ url('reports/' . basename($report->file_path)) }}" target="_blank"
-                                class="text-zinc-500 hover:text-white text-sm font-medium">View PDF</a>
+                                class="text-zinc-500 hover:text-white text-sm font-medium">View</a>
+                            <a href="{{ url('reports/' . basename($report->file_path) . '?download=1') }}"
+                                class="text-zinc-500 hover:text-white text-sm font-medium">Download</a>
                             @unlessrole('Viewer')
                             <a href="{{ route('admin.financial-reports.edit', $report) }}"
                                 class="text-[#DC833D] hover:underline text-sm font-medium">Edit</a>

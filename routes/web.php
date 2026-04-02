@@ -16,9 +16,10 @@ Route::get('/reports/{filename}', function (string $filename) {
     if (!file_exists($path)) {
         abort(404);
     }
+    $disposition = request()->query('download') ? 'attachment' : 'inline';
     return response()->file($path, [
         'Content-Type' => 'application/pdf',
-        'Content-Disposition' => 'inline; filename="' . $filename . '"',
+        'Content-Disposition' => $disposition . '; filename="' . $filename . '"',
     ]);
 })->where('filename', '.*\.pdf$')->name('reports.serve');
 

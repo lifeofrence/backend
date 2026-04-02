@@ -16,9 +16,12 @@ class FinancialReportController extends Controller
         $data = $report->toArray();
         if ($report->file_path) {
             $filename = basename($report->file_path);
-            $data['file_url'] = rtrim(config('app.url'), '/') . '/reports/' . $filename;
+            $baseUrl = rtrim(config('app.url'), '/') . '/reports/' . $filename;
+            $data['file_url'] = $baseUrl;
+            $data['download_url'] = $baseUrl . '?download=1';
         } else {
             $data['file_url'] = null;
+            $data['download_url'] = null;
         }
         return $data;
     }

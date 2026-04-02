@@ -48,7 +48,7 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 text-right space-x-3">
-                            <a href="{{ Storage::disk('reports')->url($report->file_path) }}" target="_blank"
+                            <a href="{{ url('reports/' . basename($report->file_path)) }}" target="_blank"
                                 class="text-zinc-500 hover:text-white text-sm font-medium">View PDF</a>
                             @unlessrole('Viewer')
                             <a href="{{ route('admin.financial-reports.edit', $report) }}"

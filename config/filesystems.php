@@ -49,9 +49,9 @@ return [
 
         'reports' => [
             'driver' => 'local',
-            'root' => public_path('reports'),
+            'root' => storage_path('app/private/reports'),
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/reports',
-            'visibility' => 'public',
+            'visibility' => 'private',
             'throw' => false,
             'report' => false,
         ],

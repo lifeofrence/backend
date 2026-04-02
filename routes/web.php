@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Admin\AdminLeadershipController;
 use App\Http\Controllers\Admin\AdminCorporateActionController;
 use App\Http\Controllers\Admin\AdminFinancialReportController;
@@ -8,6 +9,18 @@ use App\Http\Controllers\Admin\AdminGalleryController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\ProfileController;
+
+// Public PDF Serve Route (no auth required — publicly accessible)
+Route::get('/reports/{filename}', function (string $filename) {
+    $path = storage_path('app/private/reports/' . $filename);
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    return response()->file($path, [
+        'Content-Type' => 'application/pdf',
+        'Content-Disposition' => 'inline; filename="' . $filename . '"',
+    ]);
+})->where('filename', '.*\.pdf$')->name('reports.serve');
 
 Route::get('/', function () {
     return redirect()->route('admin.dashboard');

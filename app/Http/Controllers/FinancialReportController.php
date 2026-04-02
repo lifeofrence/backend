@@ -14,7 +14,7 @@ class FinancialReportController extends Controller
     private function withFileUrl(FinancialReport $report): array
     {
         $data = $report->toArray();
-        $data['file_url'] = $report->file_path ? Storage::disk('public')->url($report->file_path) : null;
+        $data['file_url'] = $report->file_path ? Storage::disk('reports')->url($report->file_path) : null;
         return $data;
     }
 
@@ -41,7 +41,7 @@ class FinancialReportController extends Controller
         ]);
 
         if ($request->hasFile('file')) {
-            $path = $request->file('file')->store('reports', 'public');
+            $path = $request->file('file')->store('', 'reports');
             $validated['file_path'] = $path;
         }
 
@@ -72,7 +72,7 @@ class FinancialReportController extends Controller
         ]);
 
         if ($request->hasFile('file')) {
-            $path = $request->file('file')->store('reports', 'public');
+            $path = $request->file('file')->store('', 'reports');
             $validated['file_path'] = $path;
         }
 

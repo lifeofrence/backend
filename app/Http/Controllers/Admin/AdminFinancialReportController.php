@@ -32,7 +32,7 @@ class AdminFinancialReportController extends Controller
         ]);
 
         if ($request->hasFile('file')) {
-            $validated['file_path'] = $request->file('file')->store('reports', 'public');
+            $validated['file_path'] = $request->file('file')->store('', 'reports');
         }
 
         $validated['is_active'] = $request->has('is_active');
@@ -60,9 +60,9 @@ class AdminFinancialReportController extends Controller
 
         if ($request->hasFile('file')) {
             if ($financial_report->file_path) {
-                Storage::disk('public')->delete($financial_report->file_path);
+                Storage::disk('reports')->delete($financial_report->file_path);
             }
-            $validated['file_path'] = $request->file('file')->store('reports', 'public');
+            $validated['file_path'] = $request->file('file')->store('', 'reports');
         }
 
         $validated['is_active'] = $request->has('is_active');
@@ -75,7 +75,7 @@ class AdminFinancialReportController extends Controller
     public function destroy(FinancialReport $financial_report)
     {
         if ($financial_report->file_path) {
-            Storage::disk('public')->delete($financial_report->file_path);
+            Storage::disk('reports')->delete($financial_report->file_path);
         }
         $financial_report->delete();
 

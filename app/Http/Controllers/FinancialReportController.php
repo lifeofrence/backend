@@ -14,7 +14,7 @@ class FinancialReportController extends Controller
     private function withFileUrl(FinancialReport $report): array
     {
         $data = $report->toArray();
-        $data['file_url'] = $report->file_path ? Storage::url($report->file_path) : null;
+        $data['file_url'] = $report->file_path ? Storage::disk('public')->url($report->file_path) : null;
         return $data;
     }
 

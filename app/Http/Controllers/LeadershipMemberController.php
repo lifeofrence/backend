@@ -24,8 +24,13 @@ class LeadershipMemberController extends Controller
 
     public function index()
     {
-        return LeadershipMember::orderBy('order_index')->get()
+        $members = LeadershipMember::orderBy('order_index')->get()
             ->map(function ($m) { return $this->withImageUrl($m); });
+
+        return [
+            'board_of_director' => $members->where('type', 'board')->values(),
+            'management_team' => $members->where('type', 'management')->values(),
+        ];
     }
 
     /**
@@ -38,9 +43,13 @@ class LeadershipMemberController extends Controller
             'title' => 'required|string|max:255',
             'bio' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
-            'type' => 'required|in:board,management',
+            'type' => 'required|in:board,management,board_of_director,management_team',
             'order_index' => 'integer'
         ]);
+
+        // Standardize type before storing
+        if ($validated['type'] === 'board_of_director') $validated['type'] = 'board';
+        if ($validated['type'] === 'management_team') $validated['type'] = 'management';
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('', 'leadership');
@@ -69,9 +78,15 @@ class LeadershipMemberController extends Controller
             'title' => 'string|max:255',
             'bio' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
-            'type' => 'in:board,management',
+            'type' => 'in:board,management,board_of_director,management_team',
             'order_index' => 'integer'
         ]);
+
+        // Standardize type
+        if (isset($validated['type'])) {
+            if ($validated['type'] === 'board_of_director') $validated['type'] = 'board';
+            if ($validated['type'] === 'management_team') $validated['type'] = 'management';
+        }
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('', 'leadership');

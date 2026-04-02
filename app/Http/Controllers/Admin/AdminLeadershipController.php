@@ -27,9 +27,13 @@ class AdminLeadershipController extends Controller
             'title' => 'required|string|max:255',
             'bio' => 'nullable|string',
             'image' => 'nullable|image|max:10240',
-            'type' => 'required|in:board,management',
+            'type' => 'required|in:board,management,board_of_director,management_team',
             'order_index' => 'nullable|integer'
         ]);
+
+        // Standardize type before storing
+        if ($validated['type'] === 'board_of_director') $validated['type'] = 'board';
+        if ($validated['type'] === 'management_team') $validated['type'] = 'management';
 
         if ($request->hasFile('image')) {
             $validated['image_path'] = $request->file('image')->store('', 'leadership');
@@ -55,9 +59,13 @@ class AdminLeadershipController extends Controller
             'title' => 'required|string|max:255',
             'bio' => 'nullable|string',
             'image' => 'nullable|image|max:10240',
-            'type' => 'required|in:board,management',
+            'type' => 'required|in:board,management,board_of_director,management_team',
             'order_index' => 'nullable|integer'
         ]);
+
+        // Standardize type before storing
+        if ($validated['type'] === 'board_of_director') $validated['type'] = 'board';
+        if ($validated['type'] === 'management_team') $validated['type'] = 'management';
 
         if ($request->hasFile('image')) {
             if ($leadership->image_path) {

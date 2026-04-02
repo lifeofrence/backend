@@ -52,7 +52,7 @@
     <div class="w-full max-w-md">
         <div class="text-center mb-10">
             <h1 class="text-3xl font-bold tracking-tighter text-[#DC833D]">Abuja International Hotels</h1>
-            <p class="text-zinc-500 uppercase text-[10px] tracking-[0.2em] mt-2">Portal </p>
+            <!-- <p class="text-zinc-500 uppercase text-[10px] tracking-[0.2em] mt-2">Portal </p> -->
         </div>
 
         <div class="glass p-8 rounded-2xl shadow-2xl">

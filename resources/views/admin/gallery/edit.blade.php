@@ -41,7 +41,7 @@
                     <label class="text-sm font-medium text-zinc-400">Image Management</label>
                     <div class="mb-4">
                         <p class="text-[10px] text-zinc-500 uppercase tracking-widest mb-2">Current / New Preview</p>
-                        <img id="image-preview" src="{{ Storage::url($item->image_path) }}"
+                        <img id="image-preview" src="{{ url('gallery/' . basename($item->image_path)) }}"
                             class="w-full h-64 object-cover rounded-xl border border-white/10 shadow-2xl transition-all duration-500">
                     </div>
 

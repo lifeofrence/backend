@@ -10,9 +10,22 @@ class LeadershipMemberController extends Controller
     /**
      * Display a listing of the resource.
      */
+    private function withImageUrl(LeadershipMember $member): array
+    {
+        $data = $member->toArray();
+        if ($member->image_path) {
+            $filename = basename($member->image_path);
+            $data['image_url'] = rtrim(config('app.url'), '/') . '/leadership/' . $filename;
+        } else {
+            $data['image_url'] = null;
+        }
+        return $data;
+    }
+
     public function index()
     {
-        return LeadershipMember::orderBy('order_index')->get();
+        return LeadershipMember::orderBy('order_index')->get()
+            ->map(function ($m) { return $this->withImageUrl($m); });
     }
 
     /**
@@ -30,12 +43,12 @@ class LeadershipMemberController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('leadership', 'public');
+            $path = $request->file('image')->store('', 'leadership');
             $validated['image_path'] = $path;
         }
 
         $member = LeadershipMember::create($validated);
-        return response()->json($member, 201);
+        return response()->json($this->withImageUrl($member), 201);
     }
 
     /**
@@ -43,7 +56,7 @@ class LeadershipMemberController extends Controller
      */
     public function show(LeadershipMember $leadershipMember)
     {
-        return $leadershipMember;
+        return response()->json($this->withImageUrl($leadershipMember));
     }
 
     /**
@@ -61,12 +74,12 @@ class LeadershipMemberController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('leadership', 'public');
+            $path = $request->file('image')->store('', 'leadership');
             $validated['image_path'] = $path;
         }
 
         $leadershipMember->update($validated);
-        return response()->json($leadershipMember);
+        return response()->json($this->withImageUrl($leadershipMember));
     }
 
     /**

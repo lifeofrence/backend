@@ -53,9 +53,14 @@
                     <div class="flex items-center space-x-6 mb-4">
                         <div class="relative">
                             <p class="text-[10px] text-zinc-500 uppercase tracking-widest mb-2 text-center">Preview</p>
-                            <img id="image-preview"
-                                src="{{ Str::startsWith($member->image_path, '/') ? $member->image_path : Storage::url($member->image_path) }}"
-                                class="w-32 h-32 rounded-xl object-cover border border-white/10 shadow-2xl transition-all duration-500">
+                            @if($member->image_path)
+                                <img id="image-preview" src="{{ url('leadership/' . basename($member->image_path)) }}"
+                                    class="w-32 h-32 rounded-xl object-cover border border-white/10 shadow-2xl transition-all duration-500">
+                            @else
+                                <div id="image-preview" class="w-32 h-32 rounded-xl bg-zinc-800 flex items-center justify-center text-2xl font-bold text-zinc-400 border border-white/10">
+                                    {{ substr($member->name, 0, 1) }}
+                                </div>
+                            @endif
                         </div>
                         <div class="flex-1">
                             <p class="text-xs text-zinc-400 leading-relaxed italic mb-4">You are viewing the current profile

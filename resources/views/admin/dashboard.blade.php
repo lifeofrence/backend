@@ -58,7 +58,7 @@
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     @foreach($recent_gallery as $item)
                         <div class="aspect-square rounded-xl overflow-hidden glass border border-white/5 relative group">
-                            <img src="{{ Storage::url($item->image_path) }}"
+                            <img src="{{ url('gallery/' . basename($item->image_path)) }}"
                                 class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                                 alt="">
                             <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">

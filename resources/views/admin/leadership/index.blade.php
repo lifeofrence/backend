@@ -30,8 +30,14 @@
                 @forelse($members as $member)
                     <tr class="hover:bg-white/[0.02] transition-colors">
                         <td class="px-6 py-4">
-                            <img src="{{ Str::startsWith($member->image_path, '/') ? $member->image_path : Storage::url($member->image_path) }}"
-                                alt="{{ $member->name }}" class="w-10 h-10 rounded-full object-cover border border-white/10">
+                            @if($member->image_path)
+                                <img src="{{ url('leadership/' . basename($member->image_path)) }}"
+                                    alt="{{ $member->name }}" class="w-10 h-10 rounded-full object-cover border border-white/10">
+                            @else
+                                <div class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-[10px] font-bold text-zinc-400">
+                                    {{ substr($member->name, 0, 1) }}
+                                </div>
+                            @endif
                         </td>
                         <td class="px-6 py-4 font-medium text-white">{{ $member->name }}</td>
                         <td class="px-6 py-4 text-zinc-400 text-sm">{{ $member->title }}</td>

@@ -32,6 +32,16 @@ Route::get('/gallery/{filename}', function (string $filename) {
     return response()->file($path, ['Content-Type' => $mime]);
 })->where('filename', '[^/]+')->name('gallery.serve');
 
+// Public Leadership Image Serve Route
+Route::get('/leadership/{filename}', function (string $filename) {
+    $path = storage_path('app/private/leadership/' . $filename);
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    $mime = mime_content_type($path) ?: 'image/jpeg';
+    return response()->file($path, ['Content-Type' => $mime]);
+})->where('filename', '[^/]+')->name('leadership.serve');
+
 Route::get('/', function () {
     return redirect()->route('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

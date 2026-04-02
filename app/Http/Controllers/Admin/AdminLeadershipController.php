@@ -32,7 +32,7 @@ class AdminLeadershipController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $validated['image_path'] = $request->file('image')->store('leadership', 'public');
+            $validated['image_path'] = $request->file('image')->store('', 'leadership');
         }
 
         // Ensure order_index is not null
@@ -61,9 +61,9 @@ class AdminLeadershipController extends Controller
 
         if ($request->hasFile('image')) {
             if ($leadership->image_path) {
-                Storage::disk('public')->delete($leadership->image_path);
+                Storage::disk('leadership')->delete($leadership->image_path);
             }
-            $validated['image_path'] = $request->file('image')->store('leadership', 'public');
+            $validated['image_path'] = $request->file('image')->store('', 'leadership');
         }
 
         // Ensure order_index is not null
@@ -77,7 +77,7 @@ class AdminLeadershipController extends Controller
     public function destroy(LeadershipMember $leadership)
     {
         if ($leadership->image_path) {
-            Storage::disk('public')->delete($leadership->image_path);
+            Storage::disk('leadership')->delete($leadership->image_path);
         }
         $leadership->delete();
 

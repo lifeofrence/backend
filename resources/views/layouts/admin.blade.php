@@ -67,7 +67,7 @@
         <aside class="w-64 glass border-r border-white/10 hidden md:flex flex-col">
             <div class="p-6">
                 <a href="{{ route('admin.dashboard') }}">
-                    <h1 class="text-xl font-bold tracking-wider text-[#DC833D]">HOTEL ADMIN</h1>
+                    <h1 class="text-xl font-bold tracking-wider text-[#DC833D]">ADMIN</h1>
                 </a>
                 <p class="text-xs text-zinc-500 uppercase mt-1">Abuja International</p>
             </div>

@@ -67,7 +67,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                         </svg>
-                        <a href="{{ Storage::url($report->file_path) }}" target="_blank"
+                        <a href="{{ url('reports/' . basename($report->file_path)) }}" target="_blank"
                             class="text-xs text-[#DC833D] hover:underline">View Current PDF</a>
                     </div>
                     <label class="text-sm font-medium text-zinc-400">Replace PDF Document (optional)</label>

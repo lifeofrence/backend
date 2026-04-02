@@ -10,9 +10,22 @@ class GalleryItemController extends Controller
     /**
      * Display a listing of the resource.
      */
+    private function withImageUrl(GalleryItem $item): array
+    {
+        $data = $item->toArray();
+        if ($item->image_path) {
+            $filename = basename($item->image_path);
+            $data['image_url'] = rtrim(config('app.url'), '/') . '/gallery/' . $filename;
+        } else {
+            $data['image_url'] = null;
+        }
+        return $data;
+    }
+
     public function index()
     {
-        return GalleryItem::orderBy('order_index')->get();
+        return GalleryItem::orderBy('order_index')->get()
+            ->map(function ($item) { return $this->withImageUrl($item); });
     }
 
     /**
@@ -29,12 +42,12 @@ class GalleryItemController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('gallery', 'public');
+            $path = $request->file('image')->store('', 'gallery');
             $validated['image_path'] = $path;
         }
 
         $item = GalleryItem::create($validated);
-        return response()->json($item, 201);
+        return response()->json($this->withImageUrl($item), 201);
     }
 
     /**
@@ -42,7 +55,7 @@ class GalleryItemController extends Controller
      */
     public function show(GalleryItem $galleryItem)
     {
-        return $galleryItem;
+        return response()->json($this->withImageUrl($galleryItem));
     }
 
     /**
@@ -59,12 +72,12 @@ class GalleryItemController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('gallery', 'public');
+            $path = $request->file('image')->store('', 'gallery');
             $validated['image_path'] = $path;
         }
 
         $galleryItem->update($validated);
-        return response()->json($galleryItem);
+        return response()->json($this->withImageUrl($galleryItem));
     }
 
     /**

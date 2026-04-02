@@ -22,6 +22,16 @@ Route::get('/reports/{filename}', function (string $filename) {
     ]);
 })->where('filename', '.*\.pdf$')->name('reports.serve');
 
+// Public Gallery Image Serve Route
+Route::get('/gallery/{filename}', function (string $filename) {
+    $path = storage_path('app/private/gallery/' . $filename);
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    $mime = mime_content_type($path) ?: 'image/jpeg';
+    return response()->file($path, ['Content-Type' => $mime]);
+})->where('filename', '[^/]+')->name('gallery.serve');
+
 Route::get('/', function () {
     return redirect()->route('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

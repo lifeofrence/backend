@@ -19,7 +19,7 @@
         @forelse($items as $item)
             <div class="card overflow-hidden group">
                 <div class="relative h-48">
-                    <img src="{{ Storage::url($item->image_path) }}" alt="{{ $item->title }}"
+                    <img src="{{ url('gallery/' . basename($item->image_path)) }}" alt="{{ $item->title }}"
                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     @unlessrole('Viewer')
                     <div

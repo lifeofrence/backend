@@ -31,7 +31,7 @@ class AdminGalleryController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $validated['image_path'] = $request->file('image')->store('gallery', 'public');
+            $validated['image_path'] = $request->file('image')->store('', 'gallery');
         }
 
         // Ensure order_index is not null
@@ -59,9 +59,9 @@ class AdminGalleryController extends Controller
 
         if ($request->hasFile('image')) {
             if ($gallery->image_path) {
-                Storage::disk('public')->delete($gallery->image_path);
+                Storage::disk('gallery')->delete($gallery->image_path);
             }
-            $validated['image_path'] = $request->file('image')->store('gallery', 'public');
+            $validated['image_path'] = $request->file('image')->store('', 'gallery');
         }
 
         // Ensure order_index is not null
@@ -75,7 +75,7 @@ class AdminGalleryController extends Controller
     public function destroy(GalleryItem $gallery)
     {
         if ($gallery->image_path) {
-            Storage::disk('public')->delete($gallery->image_path);
+            Storage::disk('gallery')->delete($gallery->image_path);
         }
         $gallery->delete();
 

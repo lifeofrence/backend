@@ -13,17 +13,27 @@
                 @csrf
                 @method('PUT')
 
+                @if ($errors->any())
+                    <div class="bg-red-500/10 text-red-500 p-4 rounded-lg mb-6">
+                        <ul class="list-disc list-inside text-sm">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <div class="grid grid-cols-2 gap-6">
                     <div class="space-y-2">
                         <label class="text-sm font-medium text-zinc-400">Reporting Period</label>
-                        <input type="text" name="period" value="{{ $report->period }}" required
+                        <input type="text" name="period" value="{{ old('period', $report->period) }}" required
                             class="w-full rounded-lg px-4 py-2.5 focus:outline-none">
                     </div>
                     <div class="space-y-2">
                         <label class="text-sm font-medium text-zinc-400">Report Type</label>
                         <select name="type" required class="w-full rounded-lg px-4 py-2.5 focus:outline-none">
-                            <option value="annual" {{ $report->type == 'annual' ? 'selected' : '' }}>Annual Report</option>
-                            <option value="quarterly" {{ $report->type == 'quarterly' ? 'selected' : '' }}>Quarterly Result
+                            <option value="annual" {{ old('type', $report->type) == 'annual' ? 'selected' : '' }}>Annual Report</option>
+                            <option value="quarterly" {{ old('type', $report->type) == 'quarterly' ? 'selected' : '' }}>Quarterly Result
                             </option>
                         </select>
                     </div>
@@ -31,19 +41,19 @@
 
                 <div class="space-y-2">
                     <label class="text-sm font-medium text-zinc-400">Report Title</label>
-                    <input type="text" name="title" value="{{ $report->title }}" required
+                    <input type="text" name="title" value="{{ old('title', $report->title) }}" required
                         class="w-full rounded-lg px-4 py-2.5 focus:outline-none">
                 </div>
 
                 <div class="space-y-2">
                     <label class="text-sm font-medium text-zinc-400">Subtitle (optional)</label>
-                    <input type="text" name="subtitle" value="{{ $report->subtitle }}"
+                    <input type="text" name="subtitle" value="{{ old('subtitle', $report->subtitle) }}"
                         class="w-full rounded-lg px-4 py-2.5 focus:outline-none">
                 </div>
 
                 <div class="space-y-2">
                     <label class="flex items-center space-x-3 cursor-pointer">
-                        <input type="checkbox" name="is_active" value="1" {{ $report->is_active ? 'checked' : '' }}
+                        <input type="checkbox" name="is_active" value="1" {{ old('is_active', $report->is_active) ? 'checked' : '' }}
                             class="w-4 h-4 rounded border-zinc-800 text-[#DC833D] focus:ring-[#DC833D] bg-zinc-900">
                         <span class="text-sm font-medium text-zinc-300">Visible on website</span>
                     </label>
@@ -61,7 +71,7 @@
                             class="text-xs text-[#DC833D] hover:underline">View Current PDF</a>
                     </div>
                     <label class="text-sm font-medium text-zinc-400">Replace PDF Document (optional)</label>
-                    <input type="file" name="file"
+                    <input type="file" name="file" accept=".pdf"
                         class="w-full text-zinc-500 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-[#DC833D]/10 file:text-[#DC833D] hover:file:bg-[#DC833D]/20 cursor-pointer">
                 </div>
 

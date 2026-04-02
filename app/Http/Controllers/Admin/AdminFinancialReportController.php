@@ -22,6 +22,15 @@ class AdminFinancialReportController extends Controller
 
     public function store(Request $request)
     {
+        \Log::info('Financial Report Upload Debug', [
+            'has_file' => $request->hasFile('file'),
+            'file_valid' => $request->hasFile('file') ? $request->file('file')->isValid() : false,
+            'file_size' => $request->hasFile('file') ? $request->file('file')->getSize() : null,
+            'file_mime' => $request->hasFile('file') ? $request->file('file')->getMimeType() : null,
+            'all_input' => $request->except('file'),
+            'content_type' => $request->header('Content-Type'),
+        ]);
+
         $validated = $request->validate([
             'period' => 'required|string|max:255',
             'type' => 'required|in:annual,quarterly',

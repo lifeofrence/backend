@@ -12,17 +12,27 @@
                 class="space-y-6">
                 @csrf
 
+                @if ($errors->any())
+                    <div class="bg-red-500/10 text-red-500 p-4 rounded-lg mb-6">
+                        <ul class="list-disc list-inside text-sm">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <div class="grid grid-cols-2 gap-6">
                     <div class="space-y-2">
                         <label class="text-sm font-medium text-zinc-400">Reporting Period</label>
                         <input type="text" name="period" required class="w-full rounded-lg px-4 py-2.5 focus:outline-none"
-                            placeholder="e.g. Q4 2024 or 2023">
+                            placeholder="e.g. Q4 2024 or 2023" value="{{ old('period') }}">
                     </div>
                     <div class="space-y-2">
                         <label class="text-sm font-medium text-zinc-400">Report Type</label>
                         <select name="type" required class="w-full rounded-lg px-4 py-2.5 focus:outline-none">
-                            <option value="annual">Annual Report</option>
-                            <option value="quarterly">Quarterly Result</option>
+                            <option value="annual" {{ old('type') == 'annual' ? 'selected' : '' }}>Annual Report</option>
+                            <option value="quarterly" {{ old('type') == 'quarterly' ? 'selected' : '' }}>Quarterly Result</option>
                         </select>
                     </div>
                 </div>
@@ -30,18 +40,18 @@
                 <div class="space-y-2">
                     <label class="text-sm font-medium text-zinc-400">Report Title</label>
                     <input type="text" name="title" required class="w-full rounded-lg px-4 py-2.5 focus:outline-none"
-                        placeholder="e.g. Unaudited Financial Results">
+                        placeholder="e.g. Unaudited Financial Results" value="{{ old('title') }}">
                 </div>
 
                 <div class="space-y-2">
                     <label class="text-sm font-medium text-zinc-400">Subtitle (optional)</label>
                     <input type="text" name="subtitle" class="w-full rounded-lg px-4 py-2.5 focus:outline-none"
-                        placeholder="e.g. For the period ended...">
+                        placeholder="e.g. For the period ended..." value="{{ old('subtitle') }}">
                 </div>
 
                 <div class="space-y-2">
                     <label class="flex items-center space-x-3 cursor-pointer">
-                        <input type="checkbox" name="is_active" value="1" checked
+                        <input type="checkbox" name="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }}
                             class="w-4 h-4 rounded border-zinc-800 text-[#DC833D] focus:ring-[#DC833D] bg-zinc-900">
                         <span class="text-sm font-medium text-zinc-300">Visible on website</span>
                     </label>
@@ -51,9 +61,9 @@
                     <label class="text-sm font-medium text-zinc-400">PDF Document</label>
                     <div
                         class="border-2 border-dashed border-zinc-800 rounded-xl p-8 text-center hover:border-[#DC833D]/50 transition-colors cursor-pointer relative group">
-                        <input type="file" name="file" required
-                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                        <div class="text-zinc-500 group-hover:text-zinc-300 transition-colors">
+                        <input type="file" name="file" accept=".pdf" required
+                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                        <div class="text-zinc-500 group-hover:text-zinc-300 transition-colors pointer-events-none">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto mb-2" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

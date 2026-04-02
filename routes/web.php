@@ -52,20 +52,40 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     // Leadership
-    Route::middleware(['role:Super Admin|Admin|Leadership Manager'])->resource('leadership', AdminLeadershipController::class)->except(['index', 'show']);
-    Route::middleware(['role:Super Admin|Admin|Leadership Manager|Viewer'])->resource('leadership', AdminLeadershipController::class)->only(['index', 'show']);
+    Route::middleware(['role:Super Admin|Admin|Leadership Manager|Viewer'])->group(function () {
+        Route::get('leadership', [AdminLeadershipController::class, 'index'])->name('leadership.index');
+        Route::get('leadership/{leadership}', [AdminLeadershipController::class, 'show'])->name('leadership.show');
+        Route::middleware(['role:Super Admin|Admin|Leadership Manager'])->group(function () {
+            Route::resource('leadership', AdminLeadershipController::class)->except(['index', 'show']);
+        });
+    });
 
     // Corporate Actions
-    Route::middleware(['role:Super Admin|Admin|Corporate Actions Manager'])->resource('corporate-actions', AdminCorporateActionController::class)->except(['index', 'show']);
-    Route::middleware(['role:Super Admin|Admin|Corporate Actions Manager|Viewer'])->resource('corporate-actions', AdminCorporateActionController::class)->only(['index', 'show']);
+    Route::middleware(['role:Super Admin|Admin|Corporate Actions Manager|Viewer'])->group(function () {
+        Route::get('corporate-actions', [AdminCorporateActionController::class, 'index'])->name('corporate-actions.index');
+        Route::get('corporate-actions/{corporate_action}', [AdminCorporateActionController::class, 'show'])->name('corporate-actions.show');
+        Route::middleware(['role:Super Admin|Admin|Corporate Actions Manager'])->group(function () {
+            Route::resource('corporate-actions', AdminCorporateActionController::class)->except(['index', 'show']);
+        });
+    });
 
     // Financial Reports
-    Route::middleware(['role:Super Admin|Admin|Financial Reports Manager'])->resource('financial-reports', AdminFinancialReportController::class)->except(['index', 'show']);
-    Route::middleware(['role:Super Admin|Admin|Financial Reports Manager|Viewer'])->resource('financial-reports', AdminFinancialReportController::class)->only(['index', 'show']);
+    Route::middleware(['role:Super Admin|Admin|Financial Reports Manager|Viewer'])->group(function () {
+        Route::get('financial-reports', [AdminFinancialReportController::class, 'index'])->name('financial-reports.index');
+        Route::get('financial-reports/{financial_report}', [AdminFinancialReportController::class, 'show'])->name('financial-reports.show');
+        Route::middleware(['role:Super Admin|Admin|Financial Reports Manager'])->group(function () {
+            Route::resource('financial-reports', AdminFinancialReportController::class)->except(['index', 'show']);
+        });
+    });
 
     // Gallery
-    Route::middleware(['role:Super Admin|Admin|Gallery Manager'])->resource('gallery', AdminGalleryController::class)->except(['index', 'show']);
-    Route::middleware(['role:Super Admin|Admin|Gallery Manager|Viewer'])->resource('gallery', AdminGalleryController::class)->only(['index', 'show']);
+    Route::middleware(['role:Super Admin|Admin|Gallery Manager|Viewer'])->group(function () {
+        Route::get('gallery', [AdminGalleryController::class, 'index'])->name('gallery.index');
+        Route::get('gallery/{gallery}', [AdminGalleryController::class, 'show'])->name('gallery.show');
+        Route::middleware(['role:Super Admin|Admin|Gallery Manager'])->group(function () {
+            Route::resource('gallery', AdminGalleryController::class)->except(['index', 'show']);
+        });
+    });
 
     // User management only for Super Admin
     Route::middleware(['role:Super Admin'])->resource('users', AdminUserController::class);

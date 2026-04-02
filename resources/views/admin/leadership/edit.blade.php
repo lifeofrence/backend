@@ -30,8 +30,8 @@
                     <div class="space-y-2">
                         <label class="text-sm font-medium text-zinc-400">Team Type</label>
                         <select name="type" required class="w-full rounded-lg px-4 py-2.5 focus:outline-none">
-                            <option value="board_of_director" {{ ($member->type == 'board' || $member->type == 'board_of_director') ? 'selected' : '' }}>Board of Directors</option>
-                            <option value="management_team" {{ ($member->type == 'management' || $member->type == 'management_team') ? 'selected' : '' }}>Management Team</option>
+                            <option value="board" {{ ($member->type == 'board' || $member->type == 'board_of_director') ? 'selected' : '' }}>Board of Directors</option>
+                            <option value="management" {{ ($member->type == 'management' || $member->type == 'management_team') ? 'selected' : '' }}>Management Team</option>
                         </select>
                     </div>
                     <div class="space-y-2">

@@ -8,7 +8,7 @@
         </div>
 
         <div class="card p-8">
-            <form action="{{ route('admin.leadership.update', $member) }}" method="POST" enctype="multipart/form-data"
+            <form action="{{ route('admin.leadership.update', $member) }}?_method=PUT" method="POST" enctype="multipart/form-data"
                 class="space-y-6">
                 @csrf
                 @method('PUT')

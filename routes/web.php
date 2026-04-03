@@ -54,37 +54,66 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     // Leadership
     Route::middleware(['role:Super Admin|Admin|Leadership Manager|Viewer'])->group(function () {
         Route::get('leadership', [AdminLeadershipController::class, 'index'])->name('leadership.index');
+        Route::get('leadership/{leadership}', [AdminLeadershipController::class, 'show'])->name('leadership.show');
+
         Route::middleware(['role:Super Admin|Admin|Leadership Manager'])->group(function () {
-            Route::resource('leadership', AdminLeadershipController::class)->except(['index', 'show']);
+            Route::get('leadership/create', [AdminLeadershipController::class, 'create'])->name('leadership.create');
+            Route::post('leadership', [AdminLeadershipController::class, 'store'])->name('leadership.store');
+            Route::get('leadership/{leadership}/edit', [AdminLeadershipController::class, 'edit'])->name('leadership.edit');
+            Route::put('leadership/{leadership}', [AdminLeadershipController::class, 'update'])->name('leadership.update');
+            Route::delete('leadership/{leadership}', [AdminLeadershipController::class, 'destroy'])->name('leadership.destroy');
         });
     });
 
     // Corporate Actions
     Route::middleware(['role:Super Admin|Admin|Corporate Actions Manager|Viewer'])->group(function () {
         Route::get('corporate-actions', [AdminCorporateActionController::class, 'index'])->name('corporate-actions.index');
+        Route::get('corporate-actions/{corporate_action}', [AdminCorporateActionController::class, 'show'])->name('corporate-actions.show');
+
         Route::middleware(['role:Super Admin|Admin|Corporate Actions Manager'])->group(function () {
-            Route::resource('corporate-actions', AdminCorporateActionController::class)->except(['index', 'show']);
+            Route::get('corporate-actions/create', [AdminCorporateActionController::class, 'create'])->name('corporate-actions.create');
+            Route::post('corporate-actions', [AdminCorporateActionController::class, 'store'])->name('corporate-actions.store');
+            Route::get('corporate-actions/{corporate_action}/edit', [AdminCorporateActionController::class, 'edit'])->name('corporate-actions.edit');
+            Route::put('corporate-actions/{corporate_action}', [AdminCorporateActionController::class, 'update'])->name('corporate-actions.update');
+            Route::delete('corporate-actions/{corporate_action}', [AdminCorporateActionController::class, 'destroy'])->name('corporate-actions.destroy');
         });
     });
 
     // Financial Reports
     Route::middleware(['role:Super Admin|Admin|Financial Reports Manager|Viewer'])->group(function () {
         Route::get('financial-reports', [AdminFinancialReportController::class, 'index'])->name('financial-reports.index');
+
         Route::middleware(['role:Super Admin|Admin|Financial Reports Manager'])->group(function () {
-            Route::resource('financial-reports', AdminFinancialReportController::class)->except(['index', 'show']);
+            Route::get('financial-reports/create', [AdminFinancialReportController::class, 'create'])->name('financial-reports.create');
+            Route::post('financial-reports', [AdminFinancialReportController::class, 'store'])->name('financial-reports.store');
+            Route::get('financial-reports/{financial_report}/edit', [AdminFinancialReportController::class, 'edit'])->name('financial-reports.edit');
+            Route::put('financial-reports/{financial_report}', [AdminFinancialReportController::class, 'update'])->name('financial-reports.update');
+            Route::delete('financial-reports/{financial_report}', [AdminFinancialReportController::class, 'destroy'])->name('financial-reports.destroy');
         });
     });
 
     // Gallery
     Route::middleware(['role:Super Admin|Admin|Gallery Manager|Viewer'])->group(function () {
         Route::get('gallery', [AdminGalleryController::class, 'index'])->name('gallery.index');
+
         Route::middleware(['role:Super Admin|Admin|Gallery Manager'])->group(function () {
-            Route::resource('gallery', AdminGalleryController::class)->except(['index', 'show']);
+            Route::get('gallery/create', [AdminGalleryController::class, 'create'])->name('gallery.create');
+            Route::post('gallery', [AdminGalleryController::class, 'store'])->name('gallery.store');
+            Route::get('gallery/{gallery}/edit', [AdminGalleryController::class, 'edit'])->name('gallery.edit');
+            Route::put('gallery/{gallery}', [AdminGalleryController::class, 'update'])->name('gallery.update');
+            Route::delete('gallery/{gallery}', [AdminGalleryController::class, 'destroy'])->name('gallery.destroy');
         });
     });
 
     // User management only for Super Admin
-    Route::middleware(['role:Super Admin'])->resource('users', AdminUserController::class);
+    Route::middleware(['role:Super Admin'])->group(function () {
+        Route::get('users', [AdminUserController::class, 'index'])->name('users.index');
+        Route::get('users/create', [AdminUserController::class, 'create'])->name('users.create');
+        Route::post('users', [AdminUserController::class, 'store'])->name('users.store');
+        Route::get('users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
+        Route::put('users/{user}', [AdminUserController::class, 'update'])->name('users.update');
+        Route::delete('users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+    });
 });
 
 Route::middleware('auth')->group(function () {

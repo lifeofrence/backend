@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\AdminLeadershipController;
 use App\Http\Controllers\Admin\AdminCorporateActionController;
 use App\Http\Controllers\Admin\AdminFinancialReportController;
 use App\Http\Controllers\Admin\AdminGalleryController;
+use App\Http\Controllers\Admin\AdminKeyMaterialController;
+use App\Http\Controllers\Admin\AdminPressReleaseController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\ProfileController;
@@ -22,6 +24,19 @@ Route::get('/reports/{filename}', function (string $filename) {
         'Content-Disposition' => $disposition . '; filename="' . $filename . '"',
     ]);
 })->where('filename', '.*\.pdf$')->name('reports.serve');
+
+// Public Key Materials Serve Route
+Route::get('/key-materials/{filename}', function (string $filename) {
+    $path = storage_path('app/private/key_materials/' . $filename);
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    $disposition = request()->query('download') ? 'attachment' : 'inline';
+    return response()->file($path, [
+        'Content-Type' => 'application/pdf',
+        'Content-Disposition' => $disposition . '; filename="' . $filename . '"',
+    ]);
+})->where('filename', '.*\.pdf$')->name('key-materials.serve');
 
 // Public Gallery Image Serve Route
 Route::get('/gallery/{filename}', function (string $filename) {
@@ -60,7 +75,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
             Route::get('leadership/create', [AdminLeadershipController::class, 'create'])->name('leadership.create');
             Route::post('leadership', [AdminLeadershipController::class, 'store'])->name('leadership.store');
             Route::get('leadership/{leadership}/edit', [AdminLeadershipController::class, 'edit'])->name('leadership.edit');
-            Route::put('leadership/{leadership}', [AdminLeadershipController::class, 'update'])->name('leadership.update');
+            Route::match(['put', 'post'], 'leadership/{leadership}', [AdminLeadershipController::class, 'update'])->name('leadership.update');
             Route::delete('leadership/{leadership}', [AdminLeadershipController::class, 'destroy'])->name('leadership.destroy');
         });
     });
@@ -74,7 +89,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
             Route::get('corporate-actions/create', [AdminCorporateActionController::class, 'create'])->name('corporate-actions.create');
             Route::post('corporate-actions', [AdminCorporateActionController::class, 'store'])->name('corporate-actions.store');
             Route::get('corporate-actions/{corporate_action}/edit', [AdminCorporateActionController::class, 'edit'])->name('corporate-actions.edit');
-            Route::put('corporate-actions/{corporate_action}', [AdminCorporateActionController::class, 'update'])->name('corporate-actions.update');
+            Route::match(['put', 'post'], 'corporate-actions/{corporate_action}', [AdminCorporateActionController::class, 'update'])->name('corporate-actions.update');
             Route::delete('corporate-actions/{corporate_action}', [AdminCorporateActionController::class, 'destroy'])->name('corporate-actions.destroy');
         });
     });
@@ -87,8 +102,34 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
             Route::get('financial-reports/create', [AdminFinancialReportController::class, 'create'])->name('financial-reports.create');
             Route::post('financial-reports', [AdminFinancialReportController::class, 'store'])->name('financial-reports.store');
             Route::get('financial-reports/{financial_report}/edit', [AdminFinancialReportController::class, 'edit'])->name('financial-reports.edit');
-            Route::put('financial-reports/{financial_report}', [AdminFinancialReportController::class, 'update'])->name('financial-reports.update');
+            Route::match(['put', 'post'], 'financial-reports/{financial_report}', [AdminFinancialReportController::class, 'update'])->name('financial-reports.update');
             Route::delete('financial-reports/{financial_report}', [AdminFinancialReportController::class, 'destroy'])->name('financial-reports.destroy');
+        });
+    });
+
+    // Key Materials
+    Route::middleware(['role:Super Admin|Admin|Key Materials Manager|Viewer'])->group(function () {
+        Route::get('key-materials', [AdminKeyMaterialController::class, 'index'])->name('key-materials.index');
+
+        Route::middleware(['role:Super Admin|Admin|Key Materials Manager'])->group(function () {
+            Route::get('key-materials/create', [AdminKeyMaterialController::class, 'create'])->name('key-materials.create');
+            Route::post('key-materials', [AdminKeyMaterialController::class, 'store'])->name('key-materials.store');
+            Route::get('key-materials/{key_material}/edit', [AdminKeyMaterialController::class, 'edit'])->name('key-materials.edit');
+            Route::match(['put', 'post'], 'key-materials/{key_material}', [AdminKeyMaterialController::class, 'update'])->name('key-materials.update');
+            Route::delete('key-materials/{key_material}', [AdminKeyMaterialController::class, 'destroy'])->name('key-materials.destroy');
+        });
+    });
+
+    // Press Releases
+    Route::middleware(['role:Super Admin|Admin|Press Releases Manager|Viewer'])->group(function () {
+        Route::get('press-releases', [AdminPressReleaseController::class, 'index'])->name('press-releases.index');
+
+        Route::middleware(['role:Super Admin|Admin|Press Releases Manager'])->group(function () {
+            Route::get('press-releases/create', [AdminPressReleaseController::class, 'create'])->name('press-releases.create');
+            Route::post('press-releases', [AdminPressReleaseController::class, 'store'])->name('press-releases.store');
+            Route::get('press-releases/{press_release}/edit', [AdminPressReleaseController::class, 'edit'])->name('press-releases.edit');
+            Route::put('press-releases/{press_release}', [AdminPressReleaseController::class, 'update'])->name('press-releases.update');
+            Route::delete('press-releases/{press_release}', [AdminPressReleaseController::class, 'destroy'])->name('press-releases.destroy');
         });
     });
 
@@ -100,7 +141,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
             Route::get('gallery/create', [AdminGalleryController::class, 'create'])->name('gallery.create');
             Route::post('gallery', [AdminGalleryController::class, 'store'])->name('gallery.store');
             Route::get('gallery/{gallery}/edit', [AdminGalleryController::class, 'edit'])->name('gallery.edit');
-            Route::put('gallery/{gallery}', [AdminGalleryController::class, 'update'])->name('gallery.update');
+            Route::match(['put', 'post'], 'gallery/{gallery}', [AdminGalleryController::class, 'update'])->name('gallery.update');
             Route::delete('gallery/{gallery}', [AdminGalleryController::class, 'destroy'])->name('gallery.destroy');
         });
     });

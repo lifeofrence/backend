@@ -33,7 +33,8 @@
                             </svg>
                         </a>
                         <form action="{{ route('admin.gallery.destroy', $item) }}" method="POST" class="inline">
-                            @csrf@method('DELETE')
+                            @csrf
+                            @method('DELETE')
                             <button type="submit" class="p-2 bg-white/10 hover:bg-red-500 rounded-full transition-colors"
                                 onclick="return confirm('Delete this image?')">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"

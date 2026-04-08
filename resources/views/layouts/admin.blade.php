@@ -99,6 +99,20 @@
                 </a>
                 @endhasanyrole
 
+                @hasanyrole('Super Admin|Admin|Key Materials Manager|Viewer')
+                <a href="{{ route('admin.key-materials.index') }}"
+                    class="flex items-center px-4 py-3 rounded-lg sidebar-link {{ request()->routeIs('admin.key-materials.*') ? 'active' : '' }}">
+                    Key Materials
+                </a>
+                @endhasanyrole
+
+                @hasanyrole('Super Admin|Admin|Press Releases Manager|Viewer')
+                <a href="{{ route('admin.press-releases.index') }}"
+                    class="flex items-center px-4 py-3 rounded-lg sidebar-link {{ request()->routeIs('admin.press-releases.*') ? 'active' : '' }}">
+                    Press Releases
+                </a>
+                @endhasanyrole
+
                 @hasanyrole('Super Admin|Admin|Gallery Manager|Viewer')
                 <a href="{{ route('admin.gallery.index') }}"
                     class="flex items-center px-4 py-3 rounded-lg sidebar-link {{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">

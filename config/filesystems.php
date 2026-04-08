@@ -74,6 +74,15 @@ return [
             'report' => false,
         ],
 
+        'key_materials' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/key_materials'),
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/key-materials',
+            'visibility' => 'private',
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

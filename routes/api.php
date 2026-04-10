@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\PressReleaseController;
 // Public routes
 Route::get('leadership', [LeadershipMemberController::class, 'index']);
 Route::get('corporate-actions', [CorporateActionController::class, 'index']);
+Route::get('corporate-actions/{corporate_action}', [CorporateActionController::class, 'show']);
 Route::get('financial-reports', [FinancialReportController::class, 'index']);
 Route::get('gallery', [GalleryItemController::class, 'index']);
 Route::get('key-materials', [KeyMaterialController::class, 'index']);
@@ -24,7 +25,7 @@ Route::get('press-releases/{press_release}', [PressReleaseController::class, 'sh
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('leadership', LeadershipMemberController::class)->except(['index']);
-    Route::apiResource('corporate-actions', CorporateActionController::class)->except(['index']);
+    Route::apiResource('corporate-actions', CorporateActionController::class)->except(['index', 'show']);
     Route::apiResource('financial-reports', FinancialReportController::class)->except(['index']);
     Route::apiResource('gallery', GalleryItemController::class)->except(['index']);
     Route::apiResource('key-materials', KeyMaterialController::class)->except(['index', 'show']);
